@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="description" content="Alcademia uses advanced AI to build a unique learning path for every student. Join thousands securing early access to the future of adaptive education.">
   <title>Alcademia — Learn at the Speed of You</title>
 
@@ -69,12 +69,16 @@
      ============================================================ */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+  }
   body {
     background: var(--ink);
     color: var(--t1);
     font-family: var(--body);
     line-height: 1.65;
-    overflow-x: hidden;
     cursor: none;
   }
   @media (hover: none), (pointer: coarse) { body { cursor: auto; } }
@@ -131,7 +135,7 @@
   /* ============================================================
      LAYOUT WRAPPER
      ============================================================ */
-  .wrap { position: relative; z-index: 1; }
+  .wrap { position: relative; z-index: 1; overflow-x: hidden; width: 100%; }
   .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
 
   /* ============================================================
@@ -618,8 +622,8 @@
     }
     .video-inner { border-radius: 16px; }
     
-    .fl-ai { bottom: -20px; right: -10px; transform: scale(0.85); transform-origin: bottom right; }
-    .fl-prog { top: -20px; left: -10px; transform: scale(0.85); transform-origin: top left; }
+    .fl-ai { bottom: -10px; right: 0px; transform: scale(0.85); transform-origin: bottom right; }
+    .fl-prog { top: -10px; left: 0px; transform: scale(0.85); transform-origin: top left; }
 
     /* Sections */
     .section { padding: 60px 20px; }
