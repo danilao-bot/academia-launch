@@ -761,7 +761,7 @@
                 >
                 <span class="val-m" id="h-val" role="alert"></span>
               </div>
-              <button type="submit" class="cta-btn">
+              <button type="button" class="cta-btn" onclick="submitWaitlist('h-form', 'h-email', 'h-val', 'h-succ')">
                 <span class="btn-lbl">Get Early Access</span>
                 <span class="spin" aria-hidden="true"></span>
               </button>
@@ -1136,7 +1136,10 @@
   /* ──────────────────────────────────────────────
      FORMSPREE SUBMISSION
      ────────────────────────────────────────────── */
-  function wireForm(formId, emailId, msgId, succId) {
+  /* ──────────────────────────────────────────────
+     FORMSPREE PURE JS SUBMISSION (No Redirects)
+     ────────────────────────────────────────────── */
+  async function submitWaitlist(formId, emailId, msgId, succId) {
     const form  = document.getElementById(formId);
     const inp   = document.getElementById(emailId);
     const msg   = document.getElementById(msgId);
@@ -1144,56 +1147,47 @@
     const btn   = form.querySelector('.cta-btn');
     const lbl   = btn.querySelector('.btn-lbl');
 
-    form.onsubmit = async function(e) {
-      e.preventDefault();
-      e.stopImmediatePropagation();
+    const email = inp.value.trim();
+    if (!email || !isValidEmail(email)) {
+      inp.classList.add('err');
+      msg.textContent = 'Please enter a valid email address.';
+      msg.classList.add('on');
+      return;
+    }
 
-      const email = inp.value.trim();
-      if (!email || !isValidEmail(email)) {
-        inp.classList.add('err');
-        msg.textContent = 'Please enter a valid email address.';
-        msg.classList.add('on');
-        return false;
-      }
+    btn.classList.add('loading');
+    lbl.textContent = 'Joining…';
 
-      btn.classList.add('loading');
-      lbl.textContent = 'Joining…';
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body:   new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
 
-      try {
-        const formData = new FormData(form);
-        const res = await fetch(form.action, {
-          method: 'POST',
-          body:   formData,
-          headers: { 'Accept': 'application/json' }
+      if (res.ok) {
+        // Confetti Celebration
+        confetti({
+          particleCount: 150,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ['#4A8DF8', '#1FD0EA', '#30D49A', '#FABB28']
         });
 
-        if (res.ok) {
-          // Trigger Confetti!
-          confetti({
-            particleCount: 150,
-            spread: 70,
-            origin: { y: 0.6 },
-            colors: ['#4A8DF8', '#1FD0EA', '#30D49A', '#FABB28']
-          });
-
-          form.style.display  = 'none';
-          succ.classList.add('on');
-          window.scrollTo({ top: form.offsetTop - 100, behavior: 'smooth' });
-        } else {
-          throw new Error('Server error');
-        }
-      } catch (err) {
-        btn.classList.remove('loading');
-        lbl.textContent = 'Try Again';
-        msg.textContent = 'Error. Please check your connection.';
-        msg.classList.add('on');
+        form.style.display = 'none';
+        succ.classList.add('on');
+        window.scrollTo({ top: form.offsetTop - 100, behavior: 'smooth' });
+      } else {
+        throw new Error('Server error');
       }
-      return false;
-    };
+    } catch (err) {
+      btn.classList.remove('loading');
+      lbl.textContent = 'Try Again';
+      msg.textContent = 'Error. Please check your connection.';
+      msg.classList.add('on');
+    }
   }
-
-  wireForm('h-form', 'h-email', 'h-val', 'h-succ');
-  wireForm('c-form', 'c-email', 'c-val', 'c-succ');
+  window.submitWaitlist = submitWaitlist;
 
   /* ──────────────────────────────────────────────
      SCROLL REVEAL (IntersectionObserver)
