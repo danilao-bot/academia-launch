@@ -280,7 +280,7 @@
   }
   .cta-btn:hover::before  { opacity: 1; }
   .cta-btn:hover { transform: translateY(-1px); box-shadow: 0 10px 36px rgba(74,141,248,0.38); }
-  .cta-btn:active { transform: translateY(0); }
+  .cta-btn:active { transform: scale(0.96); opacity: 0.9; }
   .cta-btn > * { position: relative; z-index: 1; }
   .cta-btn.loading { opacity: 0.78; pointer-events: none; }
   .cta-btn .spin {
@@ -1168,12 +1168,7 @@
       if (res.ok) {
         // Confetti Celebration (safety check)
         if (typeof confetti === 'function') {
-          confetti({
-            particleCount: 150,
-            spread: 70,
-            origin: { y: 0.6 },
-            colors: ['#4A8DF8', '#1FD0EA', '#30D49A', '#FABB28']
-          });
+          confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#4A8DF8', '#1FD0EA', '#30D49A', '#FABB28'] });
         }
 
         form.style.display = 'none';
@@ -1183,9 +1178,10 @@
         throw new Error('Server error');
       }
     } catch (err) {
+      console.error("Submission Error:", err);
       btn.classList.remove('loading');
-      lbl.textContent = 'Try Again';
-      msg.textContent = 'Error. Please check your connection.';
+      lbl.textContent = 'Secure My Spot';
+      msg.textContent = 'Network error. Please try again.';
       msg.classList.add('on');
     }
   }
