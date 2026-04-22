@@ -463,7 +463,13 @@
   /* ============================================================
      SECTIONS
      ============================================================ */
-  .section { max-width: 1120px; margin: 0 auto; padding: 96px 24px; }
+  .section { 
+    position: relative; 
+    z-index: 2; 
+    max-width: 1120px; 
+    margin: 0 auto; 
+    padding: 96px 24px; 
+  }
 
   .sec-lbl {
     font-family: var(--mono); font-size: 11px; color: var(--azure);
@@ -521,6 +527,7 @@
      HOW IT WORKS
      ============================================================ */
   .how-wrap {
+    position: relative; z-index: 2;
     background: rgba(255,255,255,0.016);
     border-top: 1px solid var(--bd); border-bottom: 1px solid var(--bd);
   }
@@ -636,8 +643,8 @@
   @media (max-width: 520px) {
     .hero {
       min-height: auto;
-      padding: 120px 20px 60px;
-      gap: 40px;
+      padding: 100px 20px 40px;
+      gap: 24px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -652,7 +659,7 @@
     .cta-btn { width: 100%; padding: 16px; font-size: 16px; border-radius: 12px; justify-content: center; }
 
     /* Video Frame Mobile Scaling */
-    .hero-vis { width: 100%; display: flex; justify-content: center; padding-top: 20px; }
+    .hero-vis { width: 100%; display: flex; justify-content: center; padding-top: 10px; margin-bottom: -10px; }
     .video-frame { 
       transform: none !important; 
       max-width: 260px; 
