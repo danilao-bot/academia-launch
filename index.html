@@ -195,62 +195,16 @@
     .hero-vis { order: -1; }
   }
 
-  /* Badge */
-  .h-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(74,141,248,0.1); border: 1px solid rgba(74,141,248,0.22);
-    border-radius: var(--pill); padding: 5px 15px;
-    font-size: 12px; font-weight: 500; color: var(--azure-l); letter-spacing: 0.3px;
-    margin-bottom: 28px;
-    opacity: 0; animation: rise 0.9s 0.1s var(--spring) forwards;
+  /* Hero Animations - Default visible, animate if JS allows */
+  .hero-left > *, .h-form-wrap {
+    opacity: 1;
   }
-  .h-badge-dot {
-    width: 6px; height: 6px; background: var(--sky); border-radius: 50%;
-    position: relative;
-    animation: dot-pulse 2s infinite;
-  }
-  .h-badge-dot::after {
-    content: '';
-    position: absolute; inset: 0;
-    background: var(--sky); border-radius: 50%;
-    animation: dot-ping 2s infinite;
-  }
-  @keyframes dot-pulse {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.2); opacity: 0.8; }
-  }
-  @keyframes dot-ping {
-    0% { transform: scale(1); opacity: 0.8; }
-    100% { transform: scale(3); opacity: 0; }
-  }
-
-  /* Headline */
-  .h1 {
-    font-family: var(--serif);
-    font-size: clamp(42px, 6.5vw, 70px);
-    font-weight: 400; line-height: 1.06; letter-spacing: -1px;
-    margin-bottom: 20px;
-    opacity: 0; animation: rise 0.95s 0.25s var(--spring) forwards;
-  }
-  .h1 .em {
-    font-style: italic;
-    background: linear-gradient(92deg, var(--azure-l), var(--sky));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .h1 .warm { color: var(--gold); -webkit-text-fill-color: var(--gold); }
-
-  /* Subline */
-  .h-p {
-    font-size: 17px; color: var(--t2); line-height: 1.72;
-    font-weight: 300; max-width: 490px; margin-bottom: 36px;
-    opacity: 0; animation: rise 0.95s 0.4s var(--spring) forwards;
-  }
-  @media (max-width: 900px) { .h-p { margin-inline: auto; } }
-
-  /* Form area */
-  .h-form-wrap {
-    opacity: 0; animation: rise 0.95s 0.55s var(--spring) forwards;
+  @media (prefers-reduced-motion: no-preference) {
+    .h-badge { opacity: 0; animation: rise 0.9s 0.1s var(--spring) forwards; }
+    .h1      { opacity: 0; animation: rise 0.95s 0.25s var(--spring) forwards; }
+    .h-p     { opacity: 0; animation: rise 0.95s 0.4s var(--spring) forwards; }
+    .h-form-wrap { opacity: 0; animation: rise 0.95s 0.55s var(--spring) forwards; }
+    .hero-vis { opacity: 0; animation: rise 1.1s 0.65s var(--spring) forwards; }
   }
 
   /* Role tabs */
@@ -810,7 +764,7 @@
       </div>
 
       <!-- Right: Product Video Teaser with 3D Frame -->
-      <div class="hero-vis" aria-hidden="true" style="position: relative;">
+      <div class="hero-vis" style="position: relative;">
         <div class="video-frame">
           <div class="video-inner">
             <video 
@@ -1221,7 +1175,7 @@
   /* ──────────────────────────────────────────────
      SCROLL REVEAL (IntersectionObserver)
      ────────────────────────────────────────────── */
-  const revOpts = { threshold: 0.14, rootMargin: '0px 0px -40px 0px' };
+  const revOpts = { threshold: 0.05, rootMargin: '0px 0px -20px 0px' };
 
   const revObs = new IntersectionObserver(entries => {
     entries.forEach(e => {
