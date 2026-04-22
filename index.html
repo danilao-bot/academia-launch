@@ -21,6 +21,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Jost:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- Scripts: Confetti for celebration -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <style>
   /* ============================================================
@@ -294,14 +297,26 @@
   /* Success state */
   .succ-msg {
     display: none; text-align: left;
-    background: rgba(48,212,154,0.07); border: 1px solid rgba(48,212,154,0.2);
-    border-radius: var(--r-lg); padding: 22px 24px; max-width: 468px;
-    animation: rise 0.5s var(--spring) forwards;
+    background: rgba(48,212,154,0.08); border: 1px solid rgba(48,212,154,0.25);
+    border-radius: var(--r-lg); padding: 32px 24px; max-width: 468px;
+    animation: succ-pop 0.6s var(--spring) forwards;
+  }
+  @keyframes succ-pop {
+    0% { transform: scale(0.9); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
   }
   @media (max-width: 900px) { .succ-msg { margin: 0 auto; text-align: center; } }
-  .succ-msg.on { display: block; }
-  .succ-icon { font-size: 28px; margin-bottom: 8px; }
-  .succ-title { font-family: var(--serif); font-size: 22px; font-weight: 600; color: var(--jade); margin-bottom: 5px; }
+  .succ-msg.on { display: flex; flex-direction: column; align-items: center; }
+  .succ-icon { 
+    width: 60px; height: 60px; background: rgba(48,212,154,0.15); 
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px; animation: check-pulse 2s infinite;
+  }
+  @keyframes check-pulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(48,212,154,0.4); }
+    50% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(48,212,154,0); }
+  }
+  .succ-title { font-family: var(--serif); font-size: 26px; font-weight: 600; color: var(--jade); margin-bottom: 8px; }
   .succ-txt { font-size: 14px; color: var(--t2); line-height: 1.6; }
 
   /* ============================================================
@@ -1153,6 +1168,14 @@
         });
 
         if (res.ok) {
+          // Trigger Confetti!
+          confetti({
+            particleCount: 150,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#4A8DF8', '#1FD0EA', '#30D49A', '#FABB28']
+          });
+
           form.style.display  = 'none';
           succ.classList.add('on');
           window.scrollTo({ top: form.offsetTop - 100, behavior: 'smooth' });
