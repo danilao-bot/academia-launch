@@ -253,10 +253,14 @@
   .email-in.err { border-color: var(--coral) !important; }
   .email-in.ok  { border-color: var(--jade)  !important; }
 
+  .email-in.err { border-color: rgba(248,107,107,0.5) !important; background: rgba(248,107,107,0.03) !important; }
+  .email-in.ok  { border-color: rgba(48,212,154,0.5) !important; background: rgba(48,212,154,0.03) !important; }
+
   .val-m {
     position: absolute; bottom: -18px; left: 20px;
-    font-size: 11.5px; color: var(--coral);
+    font-size: 10px; color: var(--coral);
     opacity: 0; transition: opacity 0.2s; pointer-events: none;
+    font-family: var(--mono); text-transform: uppercase;
   }
   .val-m.on { opacity: 1; }
 
@@ -748,7 +752,7 @@
         <div class="h-form-wrap" id="h-fw">
 
           <!-- Formspree form -->
-          <form id="h-form" action="https://formspree.io/f/mdaypoqj" method="POST" novalidate>
+          <form id="h-form" action="https://formspree.io/f/mdaypoqj" method="POST" novalidate onsubmit="submitWaitlist(event, 'h-form', 'h-email', 'h-val', 'h-succ')">
             <label class="sr-only" for="h-email">Your email address</label>
             <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
             <input type="hidden" name="role" id="h-role" value="student">
@@ -757,11 +761,11 @@
                 <input
                   type="email" name="email" id="h-email"
                   class="email-in" placeholder="you@email.com"
-                  autocomplete="email" required
+                  autocomplete="email" inputmode="email" required
                 >
-                <span class="val-m" id="h-val" role="alert"></span>
+                <span class="val-m" id="h-val" role="alert" aria-live="polite"></span>
               </div>
-              <button type="button" class="cta-btn" onclick="submitWaitlist('h-form', 'h-email', 'h-val', 'h-succ')">
+              <button type="submit" class="cta-btn">
                 <span class="btn-lbl">Get Early Access</span>
                 <span class="spin" aria-hidden="true"></span>
               </button>
@@ -909,7 +913,7 @@
 
     <div class="cta-inner scroll-r">
 
-      <form id="c-form" action="https://formspree.io/f/mdaypoqj" method="POST" novalidate>
+      <form id="c-form" action="https://formspree.io/f/mdaypoqj" method="POST" novalidate onsubmit="submitWaitlist(event, 'c-form', 'c-email', 'c-val', 'c-succ')">
         <label class="sr-only" for="c-email">Your email address</label>
         <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
         <input type="hidden" name="role" id="c-role" value="student">
@@ -918,11 +922,11 @@
             <input
               type="email" name="email" id="c-email"
               class="email-in" placeholder="your@email.com"
-              autocomplete="email" required
+              autocomplete="email" inputmode="email" required
             >
-            <span class="val-m" id="c-val" role="alert"></span>
+            <span class="val-m" id="c-val" role="alert" aria-live="polite"></span>
           </div>
-          <button type="button" class="cta-btn" onclick="submitWaitlist('c-form', 'c-email', 'c-val', 'c-succ')">
+          <button type="submit" class="cta-btn">
             <span class="btn-lbl">Secure My Spot</span>
             <span class="spin" aria-hidden="true"></span>
           </button>
@@ -1119,13 +1123,13 @@
       const v = inp.value.trim();
       if (!v) {
         inp.classList.remove('err', 'ok');
-        msg.textContent = ''; msg.classList.remove('on');
+        msg.classList.remove('on');
       } else if (!isValidEmail(v)) {
         inp.classList.add('err'); inp.classList.remove('ok');
-        msg.textContent = 'Please enter a valid email address.'; msg.classList.add('on');
+        msg.textContent = 'Invalid format'; msg.classList.add('on');
       } else {
         inp.classList.remove('err'); inp.classList.add('ok');
-        msg.textContent = ''; msg.classList.remove('on');
+        msg.classList.remove('on');
       }
     });
   }
@@ -1139,13 +1143,16 @@
   /* ──────────────────────────────────────────────
      FORMSPREE PURE JS SUBMISSION (No Redirects)
      ────────────────────────────────────────────── */
-  async function submitWaitlist(formId, emailId, msgId, succId) {
+  async function submitWaitlist(e, formId, emailId, msgId, succId) {
+    if (e) e.preventDefault();
+
     const form  = document.getElementById(formId);
     const inp   = document.getElementById(emailId);
     const msg   = document.getElementById(msgId);
     const succ  = document.getElementById(succId);
     const btn   = form.querySelector('.cta-btn');
     const lbl   = btn.querySelector('.btn-lbl');
+    const origText = lbl.textContent;
 
     const email = inp.value.trim();
     if (!email || !isValidEmail(email)) {
@@ -1166,21 +1173,23 @@
       });
 
       if (res.ok) {
-        // Confetti Celebration (safety check)
         if (typeof confetti === 'function') {
           confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#4A8DF8', '#1FD0EA', '#30D49A', '#FABB28'] });
         }
 
         form.style.display = 'none';
         succ.classList.add('on');
-        window.scrollTo({ top: form.offsetTop - 100, behavior: 'smooth' });
+        
+        // Robust scroll logic
+        const scrollTarget = succ.getBoundingClientRect().top + window.pageYOffset - 120;
+        window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
       } else {
         throw new Error('Server error');
       }
     } catch (err) {
       console.error("Submission Error:", err);
       btn.classList.remove('loading');
-      lbl.textContent = 'Secure My Spot';
+      lbl.textContent = origText;
       msg.textContent = 'Network error. Please try again.';
       msg.classList.add('on');
     }
