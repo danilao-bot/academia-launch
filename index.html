@@ -21,7 +21,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Jost:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-  
+
   <!-- Scripts: Confetti for celebration -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
@@ -202,10 +202,7 @@
     .hero-vis { order: -1; }
   }
 
-  /* Hero Animations - Default visible, animate if JS allows */
-  .hero-left > *, .h-form-wrap {
-    opacity: 1;
-  }
+  /* Hero Animations */
   @media (prefers-reduced-motion: no-preference) {
     .h-badge { opacity: 0; animation: rise 0.9s 0.1s var(--spring) forwards; }
     .h1      { opacity: 0; animation: rise 0.95s 0.25s var(--spring) forwards; }
@@ -227,17 +224,32 @@
   }
   .rtab.on { background: rgba(74,141,248,0.12); border-color: var(--azure); color: var(--azure-l); }
 
-  /* Email form row */
+  /* ── FORM FIELDS (two-column: Name | Email) ── */
+  .form-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    max-width: 468px;
+    margin-bottom: 10px;
+  }
+  @media (max-width: 900px) { .form-fields { max-width: 100%; } }
+  @media (max-width: 520px)  { .form-fields { grid-template-columns: 1fr; } }
+
+  /* Submit button row — full width under the two fields */
+  .form-btn-row {
+    max-width: 468px;
+    margin-bottom: 12px;
+  }
+  @media (max-width: 900px) { .form-btn-row { max-width: 100%; } }
+  .form-btn-row .cta-btn { width: 100%; justify-content: center; }
+
+  /* Legacy .form-row kept for cta-section override compatibility */
   .form-row {
     display: flex; gap: 10px; max-width: 468px; margin-bottom: 12px;
   }
   @media (max-width: 900px) { .form-row { max-width: 100%; } }
-  @media (max-width: 520px) {
-    .form-row { flex-direction: column; gap: 12px; }
-    .form-row .cta-btn { width: 100%; justify-content: center; }
-  }
 
-  .email-wrap { flex: 1; position: relative; }
+  .email-wrap, .input-wrap { flex: 1; position: relative; }
 
   .email-in {
     width: 100%; background: rgba(255,255,255,0.038);
@@ -250,11 +262,8 @@
     border-color: var(--azure); background: rgba(74,141,248,0.07);
     box-shadow: 0 0 0 3px rgba(74,141,248,0.13);
   }
-  .email-in.err { border-color: var(--coral) !important; }
-  .email-in.ok  { border-color: var(--jade)  !important; }
-
   .email-in.err { border-color: rgba(248,107,107,0.5) !important; background: rgba(248,107,107,0.03) !important; }
-  .email-in.ok  { border-color: rgba(48,212,154,0.5) !important; background: rgba(48,212,154,0.03) !important; }
+  .email-in.ok  { border-color: rgba(48,212,154,0.5)  !important; background: rgba(48,212,154,0.03)  !important; }
 
   .val-m {
     position: absolute; bottom: -18px; left: 20px;
@@ -311,8 +320,8 @@
   }
   @media (max-width: 900px) { .succ-msg { margin: 0 auto; text-align: center; } }
   .succ-msg.on { display: flex; flex-direction: column; align-items: center; }
-  .succ-icon { 
-    width: 60px; height: 60px; background: rgba(48,212,154,0.15); 
+  .succ-icon {
+    width: 60px; height: 60px; background: rgba(48,212,154,0.15);
     border-radius: 50%; display: flex; align-items: center; justify-content: center;
     margin-bottom: 20px; animation: check-pulse 2s infinite;
   }
@@ -324,17 +333,11 @@
   .succ-txt { font-size: 14px; color: var(--t2); line-height: 1.6; }
 
   /* ============================================================
-     HERO VISUAL (SKILL MAP)
+     HERO VISUAL (VIDEO FRAME)
      ============================================================ */
   .hero-vis {
     display: flex; justify-content: center; align-items: center;
-    opacity: 0; animation: rise 1.1s 0.65s var(--spring) forwards;
   }
-
-  .map-wrap {
-    position: relative; width: 300px; height: 300px;
-  }
-  @media (max-width: 900px) { .map-wrap { width: 240px; height: 240px; } }
 
   .map-glow {
     position: absolute; inset: -60px;
@@ -342,15 +345,15 @@
     pointer-events: none;
   }
 
-  .map-svg { width: 100%; height: 100%; overflow: visible; }
-
   /* Floating Cards */
   .fl-c {
     position: absolute;
-    background: rgba(8,12,30,0.92);
-    backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
-    border: 1px solid var(--bd-h); border-radius: 13px;
-    padding: 10px 14px; font-size: 11.5px; color: var(--t2);
+    background: rgba(8,12,30,0.85);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--bd-h); border-radius: 16px;
+    padding: 12px 16px; font-size: 11.5px; color: var(--t2);
+    z-index: 10;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
   }
 
   /* 3D Video Frame */
@@ -361,7 +364,7 @@
     border-radius: 32px;
     padding: 10px;
     border: 1px solid rgba(255,255,255,0.1);
-    box-shadow: 
+    box-shadow:
       0 30px 60px -12px rgba(0,0,0,0.5),
       0 18px 36px -18px rgba(0,0,0,0.5),
       0 0 40px rgba(74,141,248,0.15);
@@ -383,17 +386,6 @@
     position: relative;
     background: #000;
   }
-  
-  /* Floating Cards (Overlaying Video) */
-  .fl-c {
-    position: absolute;
-    background: rgba(8,12,30,0.85);
-    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--bd-h); border-radius: 16px;
-    padding: 12px 16px; font-size: 11.5px; color: var(--t2);
-    z-index: 10;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-  }
   .fl-ai {
     bottom: 20px; right: -40px;
     display: flex; align-items: center; gap: 9px; min-width: 170px;
@@ -404,9 +396,12 @@
     min-width: 150px;
     animation: float-b 5.5s 1.2s ease-in-out infinite;
   }
-  .ai-dot { width: 8px; height: 8px; background: var(--jade); border-radius: 50%; animation: pulse-g 2s infinite; }
+  @keyframes float-a { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+  @keyframes float-b { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
+
+  .ai-dot { width: 8px; height: 8px; background: var(--jade); border-radius: 50%; flex-shrink:0; animation: pulse-g 2s infinite; }
   @keyframes pulse-g { 0%,100% { box-shadow: 0 0 0 0 rgba(48,212,154,0.5); } 50% { box-shadow: 0 0 0 8px rgba(48,212,154,0); } }
-  
+
   @media (max-width: 900px) {
     .video-frame { transform: none; margin: 0 auto; max-width: 280px; }
     .fl-ai { right: -10px; bottom: -10px; }
@@ -433,19 +428,18 @@
     display: flex; align-items: center; gap: 8px;
     font-size: 13px; color: var(--t2); white-space: nowrap;
   }
-  .p-ico { font-size: 15px; }
   .p-num { font-family: var(--serif); font-size: 15px; font-weight: 600; color: var(--t1); }
   @keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
 
   /* ============================================================
      SECTIONS
      ============================================================ */
-  .section { 
-    position: relative; 
-    z-index: 2; 
-    max-width: 1120px; 
-    margin: 0 auto; 
-    padding: 96px 24px; 
+  .section {
+    position: relative;
+    z-index: 2;
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 96px 24px;
   }
 
   .sec-lbl {
@@ -482,7 +476,6 @@
   }
   .feat-card:hover { border-color: var(--bd-h); box-shadow: 0 24px 56px rgba(0,0,15,0.3), 0 0 44px rgba(74,141,248,0.09); }
   .feat-card:hover::before { opacity: 1; }
-  .feat-card.in { animation: rise 0.7s var(--spring) forwards; }
 
   .feat-ic {
     width: 44px; height: 44px; border-radius: 12px;
@@ -550,7 +543,16 @@
   .cta-section .sec-sub { margin-inline: auto; }
 
   .cta-inner { max-width: 450px; margin: 0 auto; position: relative; z-index: 1; }
-  .cta-inner .form-row { max-width: 100%; flex-direction: column; gap: 12px; margin-bottom: 14px; }
+  /* Override form-fields for centred CTA section — full width, stacked */
+  .cta-inner .form-fields {
+    grid-template-columns: 1fr 1fr;
+    max-width: 100%;
+    margin-bottom: 10px;
+  }
+  @media (max-width: 600px) {
+    .cta-inner .form-fields { grid-template-columns: 1fr; }
+  }
+  .cta-inner .form-btn-row { max-width: 100%; }
   .cta-inner .email-in { border-radius: var(--r); padding: 14px 20px; }
   .cta-inner .cta-btn  { width: 100%; justify-content: center; padding: 14px; font-size: 15px; }
   .cta-inner .role-tabs { justify-content: center; margin-bottom: 20px; }
@@ -585,23 +587,9 @@
     from { opacity: 0; } to { opacity: 1; }
   }
 
-  /* SVG dot blink */
-  .dot-bl { animation: dot-bl-a 3s ease-in-out infinite; }
-  @keyframes dot-bl-a { 0%,100%{opacity:1} 50%{opacity:0.15} }
-
-  /* Map center text reveal */
-  .map-txt { animation: fadeIn 0.8s 2.4s var(--spring) forwards; opacity: 0; }
-
   /* ============================================================
-     RESPONSIVE HELPERS
+     REDUCED MOTION
      ============================================================ */
-  .sr-only { position: absolute; clip: rect(0,0,0,0); width: 1px; height: 1px; overflow: hidden; }
-
-  /* ============================================================
-     MOBILE — DEEP RESPONSIVE
-     ============================================================ */
-
-  /* Reduced motion — respect the user */
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
@@ -612,7 +600,9 @@
     .proof-track { animation: none; }
   }
 
-  /* ≤ 520px — phone portrait */
+  /* ============================================================
+     MOBILE — ≤ 520px
+     ============================================================ */
   @media (max-width: 520px) {
     .hero {
       min-height: auto;
@@ -627,42 +617,36 @@
     .h-p { font-size: 15px; line-height: 1.6; margin-bottom: 24px; max-width: 100%; }
 
     .h-form-wrap { width: 100%; max-width: 400px; }
-    .form-row { flex-direction: column; gap: 12px; }
+    .form-fields { grid-template-columns: 1fr; gap: 12px; }
     .email-in { padding: 14px 20px; font-size: 16px; border-radius: 12px; }
     .cta-btn { width: 100%; padding: 16px; font-size: 16px; border-radius: 12px; justify-content: center; }
 
-    /* Video Frame Mobile Scaling */
     .hero-vis { width: 100%; display: flex; justify-content: center; padding-top: 10px; margin-bottom: -10px; }
-    .video-frame { 
-      transform: none !important; 
-      max-width: 260px; 
-      border-radius: 24px; 
+    .video-frame {
+      transform: none !important;
+      max-width: 260px;
+      border-radius: 24px;
       margin: 0 auto;
     }
     .video-inner { border-radius: 16px; }
-    
+
     .fl-ai { bottom: -10px; right: 0px; transform: scale(0.85); transform-origin: bottom right; }
     .fl-prog { top: -10px; left: 0px; transform: scale(0.85); transform-origin: top left; }
 
-    /* Sections */
     .section { padding: 60px 20px; }
     .sec-h { font-size: 26px; }
     .feat-grid { gap: 12px; }
     .feat-card { padding: 20px; }
 
-    /* Steps */
     .step { padding: 32px 20px; }
     .step-title { font-size: 19px; }
     .step-desc { font-size: 13.5px; }
 
-    /* CTA section */
     .cta-section { padding: 72px 20px; }
 
-    /* Footer */
     .foot-in { flex-direction: column; text-align: center; }
     .foot-links { justify-content: center; }
 
-    /* Nav */
     .nav-cta { padding: 10px 18px; font-size: 13px; min-height: 44px; }
     .logo-nm { font-size: 18px; }
     .logo-ic { width: 30px; height: 30px; font-size: 13px; }
@@ -670,19 +654,17 @@
     #nav.stuck { padding: 10px 0; }
   }
 
-  /* ≤ 380px — very small phones */
+  /* ≤ 380px */
   @media (max-width: 380px) {
     .h1 { font-size: 30px; }
     .h-badge { font-size: 11px; padding: 4px 12px; }
-    .map-wrap { width: 170px; height: 170px; }
     .proof-item { font-size: 12px; }
   }
 
-  /* ≤ 700px — tablets & large phones */
+  /* ≤ 700px */
   @media (max-width: 700px) {
     .fl-ai   { right: -6px; bottom: -20px; min-width: 140px; font-size: 10.5px; padding: 8px 11px; }
     .fl-prog { left: -10px; top: 0; min-width: 120px; font-size: 10.5px; padding: 8px 11px; }
-    .fl-prog-name { font-size: 12px; }
   }
 
   /* Safe area — notched phones */
@@ -690,6 +672,30 @@
     footer { padding-bottom: calc(36px + env(safe-area-inset-bottom)); }
     #nav { padding-top: calc(16px + env(safe-area-inset-top)); }
   }
+
+  /* ── Badge (hero) ── */
+  .h-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(74,141,248,0.09); border: 1px solid rgba(74,141,248,0.22);
+    border-radius: var(--pill); padding: 6px 16px;
+    font-size: 12.5px; color: var(--azure-l); margin-bottom: 22px;
+    font-family: var(--mono); letter-spacing: 0.5px;
+  }
+  .h-badge-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--jade);
+    animation: pulse-g 2s infinite;
+  }
+  .h1 {
+    font-family: var(--serif); font-size: clamp(38px, 5.5vw, 60px);
+    font-weight: 400; line-height: 1.06; letter-spacing: -1px; margin-bottom: 20px;
+  }
+  .h1 .em   { font-style: italic; color: var(--azure-l); }
+  .h1 .warm { font-style: italic; color: var(--gold); }
+  .h-p {
+    font-size: 17px; color: var(--t2); font-weight: 300; line-height: 1.7;
+    max-width: 420px; margin-bottom: 32px;
+  }
+  @media (max-width: 900px) { .h-p { margin-inline: auto; } }
   </style>
 </head>
 <body>
@@ -751,13 +757,29 @@
 
         <div class="h-form-wrap" id="h-fw">
 
-          <!-- Formspree form -->
-          <form id="h-form" action="https://formspree.io/f/mdaypoqj" method="POST" novalidate onsubmit="submitWaitlist(event, 'h-form', 'h-email', 'h-val', 'h-succ'); return false;">
-            <label class="sr-only" for="h-email">Your email address</label>
+          <!--
+            ★ FIX: onsubmit removed entirely.
+               Event listener is attached in JS below with synchronous
+               e.preventDefault() — this is what makes mobile work correctly.
+          -->
+          <form id="h-form" action="https://formspree.io/f/mdaypoqj" method="POST" novalidate>
+            <!-- Honeypot -->
             <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
             <input type="hidden" name="role" id="h-role" value="student">
-            <div class="form-row">
-              <div class="email-wrap">
+
+            <!-- Two-column: Name | Email -->
+            <div class="form-fields">
+              <div class="input-wrap">
+                <label class="sr-only" for="h-name">Full Name</label>
+                <input
+                  type="text" name="name" id="h-name"
+                  class="email-in" placeholder="Full Name"
+                  autocomplete="name" required
+                >
+                <span class="val-m" id="h-name-val" role="alert" aria-live="polite"></span>
+              </div>
+              <div class="input-wrap">
+                <label class="sr-only" for="h-email">Email address</label>
                 <input
                   type="email" name="email" id="h-email"
                   class="email-in" placeholder="you@email.com"
@@ -765,6 +787,10 @@
                 >
                 <span class="val-m" id="h-val" role="alert" aria-live="polite"></span>
               </div>
+            </div>
+
+            <!-- Full-width submit button -->
+            <div class="form-btn-row">
               <button type="submit" class="cta-btn">
                 <span class="btn-lbl">Get Early Access</span>
                 <span class="spin" aria-hidden="true"></span>
@@ -773,7 +799,12 @@
           </form>
 
           <div class="succ-msg" id="h-succ" role="status">
-            <div class="succ-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--jade)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+            <div class="succ-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--jade)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+            </div>
             <div class="succ-title">You're on the list.</div>
             <p class="succ-txt">We'll be in touch soon with your early access details and onboarding guide.</p>
           </div>
@@ -782,13 +813,13 @@
         </div>
       </div>
 
-      <!-- Right: Product Video Teaser with 3D Frame -->
+      <!-- Right: Product Video Teaser -->
       <div class="hero-vis" style="position: relative;">
         <div class="video-frame">
           <div class="video-inner">
-            <video 
-              src="0422(1).mp4" 
-              autoplay loop muted playsinline 
+            <video
+              src="0422(1).mp4"
+              autoplay loop muted playsinline
               style="width: 100%; height: auto; display: block;"
             ></video>
           </div>
@@ -808,7 +839,7 @@
           <div style="font-size: 9px; color: var(--t3); text-transform: uppercase; margin-bottom: 4px;">Milestone</div>
           <strong style="color:var(--t1); font-size:12px; display:block; margin-bottom:6px;">Calculus II</strong>
           <div style="width:100%; height:4px; background:rgba(255,255,255,0.1); border-radius:2px; overflow:hidden;">
-            <div id="fl-fill" style="width:73%; height:100%; background:var(--sky); transition: width 2s ease;"></div>
+            <div id="fl-fill" style="width:0%; height:100%; background:var(--sky); transition: width 2s ease;"></div>
           </div>
         </div>
 
@@ -824,14 +855,14 @@
       <div class="proof-item">Built for university students</div>
       <div class="proof-item">AI-personalized learning paths</div>
       <div class="proof-item">Real-time mastery tracking</div>
-      <div class="proof-item">Works on mobile & web</div>
+      <div class="proof-item">Works on mobile &amp; web</div>
       <div class="proof-item">Adaptive diagnostics</div>
       <div class="proof-item">Predicted mastery dates</div>
       <!-- Duplicate for seamless loop -->
       <div class="proof-item">Built for university students</div>
       <div class="proof-item">AI-personalized learning paths</div>
       <div class="proof-item">Real-time mastery tracking</div>
-      <div class="proof-item">Works on mobile & web</div>
+      <div class="proof-item">Works on mobile &amp; web</div>
       <div class="proof-item">Adaptive diagnostics</div>
       <div class="proof-item">Predicted mastery dates</div>
     </div>
@@ -913,12 +944,26 @@
 
     <div class="cta-inner scroll-r">
 
-      <form id="c-form" action="https://formspree.io/f/mdaypoqj" method="POST" novalidate onsubmit="submitWaitlist(event, 'c-form', 'c-email', 'c-val', 'c-succ'); return false;">
-        <label class="sr-only" for="c-email">Your email address</label>
+      <!--
+        ★ FIX: onsubmit removed entirely — listener attached in JS.
+      -->
+      <form id="c-form" action="https://formspree.io/f/mdaypoqj" method="POST" novalidate>
         <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
         <input type="hidden" name="role" id="c-role" value="student">
-        <div class="form-row">
-          <div class="email-wrap">
+
+        <!-- Two-column: Name | Email -->
+        <div class="form-fields">
+          <div class="input-wrap">
+            <label class="sr-only" for="c-name">Full Name</label>
+            <input
+              type="text" name="name" id="c-name"
+              class="email-in" placeholder="Full Name"
+              autocomplete="name" required
+            >
+            <span class="val-m" id="c-name-val" role="alert" aria-live="polite"></span>
+          </div>
+          <div class="input-wrap">
+            <label class="sr-only" for="c-email">Email address</label>
             <input
               type="email" name="email" id="c-email"
               class="email-in" placeholder="your@email.com"
@@ -926,6 +971,10 @@
             >
             <span class="val-m" id="c-val" role="alert" aria-live="polite"></span>
           </div>
+        </div>
+
+        <!-- Full-width submit button -->
+        <div class="form-btn-row">
           <button type="submit" class="cta-btn">
             <span class="btn-lbl">Secure My Spot</span>
             <span class="spin" aria-hidden="true"></span>
@@ -934,7 +983,12 @@
       </form>
 
       <div class="succ-msg" id="c-succ" role="status">
-        <div class="succ-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--jade)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        <div class="succ-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--jade)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </div>
         <div class="succ-title">You're in.</div>
         <p class="succ-txt">We've reserved your spot. Check your inbox for a welcome message from Alcademia.</p>
       </div>
@@ -1008,7 +1062,6 @@
   let W, H, nodes = [];
   const MAX_D  = 170;
 
-  // Mobile-aware: fewer nodes on small screens, skip if reduced motion
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const isMobile = window.innerWidth < 600;
   const MAX_N = isMobile ? 25 : 75;
@@ -1029,17 +1082,16 @@
     }));
   }
 
-  function drawFrame() {
-    ctx.clearRect(0, 0, W, H);
+  let animRunning = true;
 
-    // Update positions
+  function drawFrame() {
+    if (!animRunning || prefersReduced) return;
+    ctx.clearRect(0, 0, W, H);
     for (const n of nodes) {
       n.x += n.vx; n.y += n.vy;
       if (n.x < 0 || n.x > W) n.vx *= -1;
       if (n.y < 0 || n.y > H) n.vy *= -1;
     }
-
-    // Draw connections
     for (let i = 0; i < nodes.length; i++) {
       for (let j = i + 1; j < nodes.length; j++) {
         const dx = nodes[i].x - nodes[j].x;
@@ -1055,37 +1107,28 @@
         }
       }
     }
-
-    // Draw nodes
     for (const n of nodes) {
       ctx.beginPath();
       ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
       ctx.fillStyle = 'rgba(74,141,248,0.48)';
       ctx.fill();
     }
-
     requestAnimationFrame(drawFrame);
   }
 
   resize();
   initNodes();
 
-  // Only run animation if user hasn't requested reduced motion
-  let animRunning = true;
   if (!prefersReduced) {
     drawFrame();
-    // Pause canvas when tab is hidden (battery saver)
     document.addEventListener('visibilitychange', () => {
-      if (document.hidden) { animRunning = false; }
-      else { animRunning = true; drawFrame(); }
+      if (document.hidden) {
+        animRunning = false;
+      } else {
+        animRunning = true;
+        drawFrame();
+      }
     });
-  }
-
-  // Wrap drawFrame to respect pause state
-  const _origDraw = drawFrame;
-  function drawFrame() {
-    if (!animRunning || prefersReduced) return;
-    _origDraw();
   }
 
   window.addEventListener('resize', () => { resize(); initNodes(); }, { passive: true });
@@ -1099,34 +1142,24 @@
   }, { passive: true });
 
   /* ──────────────────────────────────────────────
-     ROLE TABS
-     ────────────────────────────────────────────── */
-  function setRole(prefix, btn) {
-    const parent = btn.closest('[role="group"]');
-    parent.querySelectorAll('.rtab').forEach(b => b.classList.remove('on'));
-    btn.classList.add('on');
-    document.getElementById(prefix + '-role').value = btn.dataset.role;
-  }
-  window.setRole = setRole;
-
-  /* ──────────────────────────────────────────────
-     EMAIL VALIDATION
+     VALIDATION HELPERS
      ────────────────────────────────────────────── */
   function isValidEmail(v) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
   }
 
-  function attachLiveValidation(inputId, msgId) {
+  function attachLiveValidation(inputId, msgId, validatorFn, errorMsg) {
     const inp = document.getElementById(inputId);
     const msg = document.getElementById(msgId);
+    if (!inp || !msg) return;
     inp.addEventListener('input', () => {
       const v = inp.value.trim();
       if (!v) {
         inp.classList.remove('err', 'ok');
         msg.classList.remove('on');
-      } else if (!isValidEmail(v)) {
+      } else if (!validatorFn(v)) {
         inp.classList.add('err'); inp.classList.remove('ok');
-        msg.textContent = 'Invalid format'; msg.classList.add('on');
+        msg.textContent = errorMsg; msg.classList.add('on');
       } else {
         inp.classList.remove('err'); inp.classList.add('ok');
         msg.classList.remove('on');
@@ -1134,84 +1167,107 @@
     });
   }
 
-  attachLiveValidation('h-email', 'h-val');
-  attachLiveValidation('c-email', 'c-val');
+  attachLiveValidation('h-name',  'h-name-val', v => v.length >= 2,    'Name too short');
+  attachLiveValidation('h-email', 'h-val',       isValidEmail,           'Invalid format');
+  attachLiveValidation('c-name',  'c-name-val', v => v.length >= 2,    'Name too short');
+  attachLiveValidation('c-email', 'c-val',       isValidEmail,           'Invalid format');
 
   /* ──────────────────────────────────────────────
-     FORMSPREE SUBMISSION
+     FORM SUBMISSION
+     ★ KEY FIX: e.preventDefault() is called SYNCHRONOUSLY
+       inside the 'submit' event listener — before any async
+       code. This prevents mobile Safari/Chrome from navigating
+       away to formspree.io.
      ────────────────────────────────────────────── */
-  /* ──────────────────────────────────────────────
-     FORMSPREE PURE JS SUBMISSION (No Redirects)
-     ────────────────────────────────────────────── */
-  async function submitWaitlist(e, formId, emailId, msgId, succId) {
-    if (e && e.preventDefault) e.preventDefault();
+  function setupForm(formId, nameId, emailId, nameValId, emailValId, succId) {
+    const form = document.getElementById(formId);
+    if (!form) return;
 
-    const form  = document.getElementById(formId);
-    const inp   = document.getElementById(emailId);
-    const msg   = document.getElementById(msgId);
-    const succ  = document.getElementById(succId);
-    const btn   = form.querySelector('.cta-btn');
-    const lbl   = btn.querySelector('.btn-lbl');
-    const origText = lbl.textContent;
+    form.addEventListener('submit', function (e) {
+      // ★ Must be FIRST — synchronous — no async before this line
+      e.preventDefault();
+      e.stopPropagation();
 
-    const email = inp.value.trim();
-    if (!email || !isValidEmail(email)) {
-      inp.classList.add('err');
-      msg.textContent = 'Please enter a valid email address.';
-      msg.classList.add('on');
-      return false;
-    }
+      const nameInp  = document.getElementById(nameId);
+      const emailInp = document.getElementById(emailId);
+      const nameMsg  = document.getElementById(nameValId);
+      const emailMsg = document.getElementById(emailValId);
+      const succEl   = document.getElementById(succId);
+      const btn      = form.querySelector('.cta-btn');
+      const lbl      = btn.querySelector('.btn-lbl');
+      const origText = lbl.textContent;
 
-    btn.classList.add('loading');
-    lbl.textContent = 'Joining…';
+      const name  = nameInp  ? nameInp.value.trim()  : '';
+      const email = emailInp ? emailInp.value.trim() : '';
 
-    try {
-      const res = await fetch(form.action, {
+      let hasError = false;
+
+      if (name.length < 2) {
+        nameInp.classList.add('err');
+        nameMsg.textContent = 'Please enter your name.';
+        nameMsg.classList.add('on');
+        hasError = true;
+      }
+      if (!email || !isValidEmail(email)) {
+        emailInp.classList.add('err');
+        emailMsg.textContent = 'Please enter a valid email.';
+        emailMsg.classList.add('on');
+        hasError = true;
+      }
+      if (hasError) return;
+
+      btn.classList.add('loading');
+      lbl.textContent = 'Joining…';
+
+      fetch(form.action, {
         method: 'POST',
         body:   new FormData(form),
         headers: { 'Accept': 'application/json' }
-      });
+      })
+      .then(function (res) {
+        if (!res.ok) throw new Error('Server error');
 
-      if (res.ok) {
-        inp.blur(); // Hide mobile keyboard
+        emailInp.blur();
+        if (nameInp) nameInp.blur();
 
         if (typeof confetti === 'function') {
-          confetti({ 
-            particleCount: 150, spread: 70, origin: { y: 0.6 }, 
+          confetti({
+            particleCount: 150,
+            spread: 70,
+            origin: { y: 0.6 },
             colors: ['#4A8DF8', '#1FD0EA', '#30D49A', '#FABB28'],
             zIndex: 9999
           });
         }
 
         form.style.display = 'none';
-        succ.classList.add('on');
-        
-        setTimeout(() => {
-          const scrollTarget = succ.getBoundingClientRect().top + window.pageYOffset - 120;
-          window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
+        succEl.classList.add('on');
+
+        setTimeout(function () {
+          var top = succEl.getBoundingClientRect().top + window.pageYOffset - 120;
+          window.scrollTo({ top: top, behavior: 'smooth' });
         }, 150);
-      } else {
-        throw new Error('Server error');
-      }
-    } catch (err) {
-      console.error("Submission Error:", err);
-      btn.classList.remove('loading');
-      lbl.textContent = origText;
-      msg.textContent = 'Network error. Please try again.';
-      msg.classList.add('on');
-    }
-    return false;
+      })
+      .catch(function (err) {
+        console.error('Submission error:', err);
+        btn.classList.remove('loading');
+        lbl.textContent = origText;
+        emailMsg.textContent = 'Network error. Please try again.';
+        emailMsg.classList.add('on');
+      });
+    });
   }
 
-  window.submitWaitlist = submitWaitlist;
+  setupForm('h-form', 'h-name', 'h-email', 'h-name-val', 'h-val', 'h-succ');
+  setupForm('c-form', 'c-name', 'c-email', 'c-name-val', 'c-val', 'c-succ');
 
   /* ──────────────────────────────────────────────
      SCROLL REVEAL (IntersectionObserver)
      ────────────────────────────────────────────── */
   const revOpts = { threshold: 0.05, rootMargin: '0px 0px -20px 0px' };
 
-  const revObs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
+  const revObs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
       if (e.isIntersecting) {
         e.target.style.animation = 'rise 0.75s cubic-bezier(0.16,1,0.3,1) forwards';
         revObs.unobserve(e.target);
@@ -1221,11 +1277,11 @@
 
   document.querySelectorAll('.scroll-r').forEach(el => revObs.observe(el));
 
-  const cardObs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
+  const cardObs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
       if (e.isIntersecting) {
-        const delay = e.target.style.getPropertyValue('--d') || '0s';
-        e.target.style.animation = `rise 0.72s ${delay} cubic-bezier(0.16,1,0.3,1) forwards`;
+        var delay = e.target.style.getPropertyValue('--d') || '0s';
+        e.target.style.animation = 'rise 0.72s ' + delay + ' cubic-bezier(0.16,1,0.3,1) forwards';
         cardObs.unobserve(e.target);
       }
     });
@@ -1234,38 +1290,33 @@
   document.querySelectorAll('.scroll-c').forEach(el => cardObs.observe(el));
 
   /* ──────────────────────────────────────────────
-     SKILL MAP RING ANIMATION
+     PROGRESS BAR ANIMATION (hero floating card)
      ────────────────────────────────────────────── */
-  const skillObs = new IntersectionObserver(entries => {
+  var skillObs = new IntersectionObserver(function (entries) {
     if (entries[0].isIntersecting) {
-      // Animate rings
-      document.querySelectorAll('.ring-p').forEach(ring => {
-        ring.style.strokeDashoffset = ring.dataset.target;
-      });
-      // Animate progress bar card
-      setTimeout(() => {
-        const fill = document.getElementById('fl-fill');
+      setTimeout(function () {
+        var fill = document.getElementById('fl-fill');
         if (fill) fill.style.width = '73%';
       }, 1600);
       skillObs.disconnect();
     }
   }, { threshold: 0.25 });
 
-  const heroVis = document.querySelector('.hero-vis');
+  var heroVis = document.querySelector('.hero-vis');
   if (heroVis) skillObs.observe(heroVis);
 
   /* ──────────────────────────────────────────────
      CARD TILT (desktop only)
      ────────────────────────────────────────────── */
   if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    document.querySelectorAll('.feat-card').forEach(card => {
-      card.addEventListener('mousemove', e => {
-        const r  = card.getBoundingClientRect();
-        const x  = (e.clientX - r.left)  / r.width  - 0.5;
-        const y  = (e.clientY - r.top)   / r.height - 0.5;
-        card.style.transform = `perspective(900px) translateY(-5px) rotateX(${-y * 6}deg) rotateY(${x * 6}deg)`;
+    document.querySelectorAll('.feat-card').forEach(function (card) {
+      card.addEventListener('mousemove', function (e) {
+        var r = card.getBoundingClientRect();
+        var x = (e.clientX - r.left)  / r.width  - 0.5;
+        var y = (e.clientY - r.top)   / r.height - 0.5;
+        card.style.transform = 'perspective(900px) translateY(-5px) rotateX(' + (-y * 6) + 'deg) rotateY(' + (x * 6) + 'deg)';
       });
-      card.addEventListener('mouseleave', () => {
+      card.addEventListener('mouseleave', function () {
         card.style.transform = '';
       });
     });
@@ -1274,9 +1325,9 @@
   /* ──────────────────────────────────────────────
      SMOOTH ANCHOR SCROLL
      ────────────────────────────────────────────── */
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', e => {
-      const target = document.querySelector(a.getAttribute('href'));
+  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var target = document.querySelector(a.getAttribute('href'));
       if (target) {
         e.preventDefault();
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
