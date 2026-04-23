@@ -752,7 +752,7 @@
         <div class="h-form-wrap" id="h-fw">
 
           <!-- Formspree form -->
-          <form id="h-form" action="https://formspree.io/f/mdaypoqj" method="POST" novalidate onsubmit="submitWaitlist(event, 'h-form', 'h-email', 'h-val', 'h-succ')">
+          <form id="h-form" action="https://formspree.io/f/mdaypoqj" method="POST" novalidate>
             <label class="sr-only" for="h-email">Your email address</label>
             <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
             <input type="hidden" name="role" id="h-role" value="student">
@@ -913,7 +913,7 @@
 
     <div class="cta-inner scroll-r">
 
-      <form id="c-form" action="https://formspree.io/f/mdaypoqj" method="POST" novalidate onsubmit="submitWaitlist(event, 'c-form', 'c-email', 'c-val', 'c-succ')">
+      <form id="c-form" action="https://formspree.io/f/mdaypoqj" method="POST" novalidate>
         <label class="sr-only" for="c-email">Your email address</label>
         <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
         <input type="hidden" name="role" id="c-role" value="student">
@@ -1144,7 +1144,7 @@
      FORMSPREE PURE JS SUBMISSION (No Redirects)
      ────────────────────────────────────────────── */
   async function submitWaitlist(e, formId, emailId, msgId, succId) {
-    if (e) e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
 
     const form  = document.getElementById(formId);
     const inp   = document.getElementById(emailId);
@@ -1159,7 +1159,7 @@
       inp.classList.add('err');
       msg.textContent = 'Please enter a valid email address.';
       msg.classList.add('on');
-      return;
+      return false;
     }
 
     btn.classList.add('loading');
@@ -1173,16 +1173,28 @@
       });
 
       if (res.ok) {
+        // Force immediate blur to hide mobile keyboard
+        inp.blur();
+
         if (typeof confetti === 'function') {
-          confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#4A8DF8', '#1FD0EA', '#30D49A', '#FABB28'] });
+          confetti({ 
+            particleCount: 150, 
+            spread: 70, 
+            origin: { y: 0.6 }, 
+            colors: ['#4A8DF8', '#1FD0EA', '#30D49A', '#FABB28'],
+            zIndex: 9999
+          });
         }
 
         form.style.display = 'none';
         succ.classList.add('on');
         
-        // Robust scroll logic
-        const scrollTarget = succ.getBoundingClientRect().top + window.pageYOffset - 120;
-        window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
+        // Robust scroll logic after keyboard starts closing
+        setTimeout(() => {
+          const scrollTarget = succ.getBoundingClientRect().top + window.pageYOffset - 120;
+          window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
+        }, 100);
+
       } else {
         throw new Error('Server error');
       }
@@ -1193,7 +1205,17 @@
       msg.textContent = 'Network error. Please try again.';
       msg.classList.add('on');
     }
+    return false;
   }
+
+  // Attach listeners properly to avoid inline 'async' issues
+  document.getElementById('h-form').addEventListener('submit', function(e) {
+    submitWaitlist(e, 'h-form', 'h-email', 'h-val', 'h-succ');
+  });
+  document.getElementById('c-form').addEventListener('submit', function(e) {
+    submitWaitlist(e, 'c-form', 'c-email', 'c-val', 'c-succ');
+  });
+
   window.submitWaitlist = submitWaitlist;
 
   /* ──────────────────────────────────────────────
